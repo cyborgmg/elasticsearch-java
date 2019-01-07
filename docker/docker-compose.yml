@@ -1,0 +1,28 @@
+version: '3'
+services:
+    elasticsearch:
+        build:
+            dockerfile: ./elasticsearch.dockerfile
+            context: .
+        image: elasticsearch:tag
+        container_name: elasticsearch
+        ports:
+            - "9200:9200"
+            - "9300:9300"
+        networks:
+            - elasticsearch-network
+    kibana:
+        build:
+            dockerfile: ./kibana.dockerfile
+            context: .
+        image: kibana:tag
+        container_name: kibana
+        ports:
+            - "5601:5601"
+        networks:
+            - elasticsearch-network
+        depends_on:
+            - elasticsearch
+networks:
+    elasticsearch-network:
+        driver: bridge
